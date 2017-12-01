@@ -1,3 +1,4 @@
+const _				= require('lodash')
 const express 	 	= require('express');
 const bodyParser 	= require('body-parser');
 const { ObjectID } 	= require('mongodb')
@@ -68,12 +69,15 @@ app.delete('/todos/:id', ( req, res ) => {
 	let id = req.params['id'];
 
 	if( !ObjectID.isValid(id) ) {
-		res.status(404).send('Invalid Id');
+		return res.status(404).send('Invalid Id');
 	}
 
 	Todo.findByIdAndRemove(id)
 		.then(
 			( todo ) => {
+				if( !todo ) {
+					return res.status(404).send('Unable to find Todo with the provided Id.')
+				}
 				res.status(200).send({ todo });
 			}, 
 			( err ) => {
@@ -83,6 +87,41 @@ app.delete('/todos/:id', ( req, res ) => {
 			( err ) => {
 				res.status(404).send('an error has occured.')
 			})
+})
+
+// TODO UPDATE
+app.patch('/todos/:id' , ( req, res ) => {
+	let id = req.params['id'];
+
+	//strickting what the user can update
+	let body = _.pick(req.body, ['text', 'completed']);
+
+	if( !ObjectID.isValid(id) ) {
+		return res.status(404).send()
+	}
+
+	//checking if .completed is a boolean and if it's true
+	if(_.isBoolean(body.completed) && body.completed) {
+		
+		body.completedAt = new Date().getTime();
+
+	}
+	else {
+		body.completed = false;
+		body.completedAt = null;
+	}
+
+	Todo.findByIdAndUpdate(id, { $set: body }, { new: true })
+		.then(( todo ) => {
+			if( !todo ) {
+				return res.status(404).send();
+			}
+
+			res.send({ todo })
+		})
+		.catch(( err ) => {
+			res.status(400).send();
+		})
 })
 
 // USER POST
