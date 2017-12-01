@@ -74,13 +74,6 @@ describe('POST /todos', () => {
 });
 
 describe('GET /todos', () => {
-	beforeEach((done) => {
-		Todo.remove({}).then(() => {
-			Todo.insertMany(todos)
-		}).then(() => done())
-			
-	});
-
 
 	it('Should get all todos', (done) => {
 		request(app)
@@ -122,6 +115,40 @@ describe('GET /todos/:id', () => {
 			.expect(404)
 			.end(done());
 	})
+});
+
+describe('DELETE /todos/:id', () => {
+
+	it('Should remove a todo', ( done ) => {
+
+		var id = todos[0]._id
+		request(app)
+			.delete('/todos/' + id )
+			.expect(200)
+			.expect((res) => {
+				expect(res._id).toBe(id);
+			})
+			.end(done())
+
+	})
+
+	it('Should return 404 if todo not found', ( done ) => {
+		var invalidId = new ObjectID().toHexString();
+
+		request(app)
+			.delete('/todos/' + invalidId )
+			.expect(400)
+			.end(done())
+	});
+
+	it('Should return 404 if ObjectID is invalid', ( done ) => {
+		let invalidId =  todos[0]._id + '123';
+
+		request(app)
+			.delete('/todos/' + invalidId)
+			.expect(404)
+			.end(done())
+	});
 })
 
 // beforeEach((done) => {
