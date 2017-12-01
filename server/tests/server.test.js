@@ -1,7 +1,7 @@
 const expect 		= require('expect');
 const request 		= require('supertest');
 const { ObjectID }	= require('mongodb')
-
+const assert 		= require('assert')
 const { app }		= require('./../server');
 const { Todo }  	= require('./../models/todo');
 const { User }  	= require('./../models/user');
@@ -19,7 +19,9 @@ const users = [{
 	email: 'First test email'
 }, {
 	_id: new ObjectID(),
-	email: 'Second test email'
+	email: 'Second test email',
+	completed: true,
+	completedAt: 333
 }];
 
 
@@ -117,39 +119,74 @@ describe('GET /todos/:id', () => {
 	})
 });
 
-describe('DELETE /todos/:id', () => {
+// describe('DELETE /todos/:id', () => {
 
-	it('Should remove a todo', ( done ) => {
+// 	it('Should remove a todo', ( done ) => {
 
-		var id = todos[0]._id
+// 		var id = todos[0]._id
+// 		request(app)
+// 			.delete('/todos/' + id )
+// 			.expect(200)
+// 			.expect((res) => {
+// 				expect(res._id).toBe(id);
+// 			})
+// 			.end(done())
+
+// 	})
+
+// 	it('Should return 404 if todo not found', ( done ) => {
+// 		var invalidId = new ObjectID().toHexString();
+
+// 		request(app)
+// 			.delete('/todos/' + invalidId )
+// 			.expect(400)
+// 			.end(done())
+// 	});
+
+// 	it('Should return 404 if ObjectID is invalid', ( done ) => {
+// 		let invalidId =  todos[0]._id + '123';
+
+// 		request(app)
+// 			.delete('/todos/' + invalidId)
+// 			.expect(404)
+// 			.end(done())
+// 	});
+// });
+
+describe('PATCH /todos/:id', () => {
+
+	it('Should update the Todo', (done) => {
+		let id = todos[0]._id.toHexString();
+		let newText = 'this is a new test text.'
+
 		request(app)
-			.delete('/todos/' + id )
+			.patch('/todos/' + id )
+			.send({text: newText, completed: true})
 			.expect(200)
-			.expect((res) => {
-				expect(res._id).toBe(id);
+			.expect(( res ) => {
+				expect(res.body.todo.text).toBe(newText)
+				expect(res.body.todo.completed).toBe(false)
+				expect(res.body.todo.completedAt).toBeA('number')
 			})
-			.end(done())
-
-	})
-
-	it('Should return 404 if todo not found', ( done ) => {
-		var invalidId = new ObjectID().toHexString();
-
-		request(app)
-			.delete('/todos/' + invalidId )
-			.expect(400)
-			.end(done())
+			.end()
+			
 	});
 
-	it('Should return 404 if ObjectID is invalid', ( done ) => {
-		let invalidId =  todos[0]._id + '123';
+	// it('Should clear completedAt when todo is not completed', ( done ) => {
+	// 	let id = todos[1]._id.toHexString();
+	// 	let newText = 'this is a new test text.'
 
-		request(app)
-			.delete('/todos/' + invalidId)
-			.expect(404)
-			.end(done())
-	});
-})
+	// 	request(app)
+	// 		.patch('/todos/' + id )
+	// 		.send({text: newText, completed: false})
+	// 		.expect(200)
+	// 		.expect((res) => {
+	// 			console.log(res)
+	// 			expect(res)
+	// 		})
+	// 		.end(done)
+	// });
+});
 
 // beforeEach((done) => {
 // 	User.remove({}).then(() => { 
