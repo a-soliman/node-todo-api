@@ -62,6 +62,29 @@ app.post('/todos', (req, res) => {
 	});
 });
 
+// TODO DELETE
+app.delete('/todos/:id', ( req, res ) => {
+	//get the id
+	let id = req.params['id'];
+
+	if( !ObjectID.isValid(id) ) {
+		res.status(404).send('Invalid Id');
+	}
+
+	Todo.findByIdAndRemove(id)
+		.then(
+			( doc ) => {
+				res.status(200).send({ removed: doc });
+			}, 
+			( err ) => {
+				res.status(404).send('Unable to find Todo with the provided Id.')
+			})
+		.catch(
+			( err ) => {
+				res.status(404).send('an error has occured.')
+			})
+})
+
 // USER POST
 app.post('/users', ( req, res ) => {
 	let user = new User({
