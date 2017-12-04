@@ -129,14 +129,14 @@ app.patch('/todos/:id' , ( req, res ) => {
 
 // USER POST
 app.post('/users', ( req, res ) => {
-	let user = new User({
-		email: req.body.email
-	});
+	let body = _.pick(req.body, ['email', 'password']);
+	
+	let user = new User(body)
 
 	user.save().then(( doc ) => {
-		res.status(200).send({ doc: doc })
-	}, ( err ) => {
-		res.status(400).send(err)
+		res.status(200).send(doc)
+	}).catch((e) => {
+		res.status(400).send(e)
 	})
 });
 
