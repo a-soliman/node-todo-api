@@ -6,10 +6,10 @@ const { app }		= require('./../server');
 const { Todo }  	= require('./../models/todo');
 const { User }  	= require('./../models/user');
 
-const { todos, populateTodos } = require('./seed/seed');
+const { todos, populateTodos, users, populateUsers } = require('./seed/seed');
 
 
-
+beforeEach(populateUsers);
 beforeEach(populateTodos);
 
 describe('POST /todos', () => {
@@ -115,7 +115,7 @@ describe('PATCH /todos/:id', () => {
 			.expect(( res ) => {
 				expect(res.body.todo.text).toBe(newText);
 				expect(res.body.todo.completed).toBe(true);
-				//expect(res.body.todo.completedAt).toBeA(Number)
+				expect(typeof res.body.todo.completedAt).toBe('number')
 			})
 			.end(done)
 			
@@ -130,7 +130,6 @@ describe('PATCH /todos/:id', () => {
 			.send({text: newText, completed: false})
 			.expect(200)
 			.expect((res) => {
-				//console.log(res)
 				expect(res.body.todo.completed).toBe(false)
 			})
 			.end(done)
@@ -154,7 +153,6 @@ describe('DELETE /todos/:id', () => {
 
 	it('Should return 404 if todo not found', ( done ) => {
 		var invalidId = new ObjectID().toHexString();
-		console.log(invalidId)
 		request(app)
 			.delete('/todos/' + invalidId )
 			.expect(404)
@@ -170,3 +168,27 @@ describe('DELETE /todos/:id', () => {
 			.end(done)
 	});
 });
+
+describe('GET users/me', () => {
+	it('Should return user if authenticated', ( done ) => {
+		request(app)
+			.get('/users/me')
+			.set('x-auth', users[0].tokens[0].token)
+			.expect(200)
+			.expect((res) => {
+				expect(res.body._id).toBe(users[0]._id.toHexString());
+				expect(res.body.email).toBe(users[0].email);
+			})
+			.end(done);
+	});
+
+	it('Should return 401 if not authenticated', ( done ) => {
+		request(app)
+			.get('/users/me')
+			.expect(401)
+			.expect((res) => {
+				expect(res.body).toEqual({});
+			})
+			.end(done);
+	})
+})
