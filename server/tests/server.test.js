@@ -6,33 +6,14 @@ const { app }		= require('./../server');
 const { Todo }  	= require('./../models/todo');
 const { User }  	= require('./../models/user');
 
-const todos = [{
-	_id: new ObjectID(),
-	text: 'First test todo'
-}, {
-	_id: new ObjectID(),
-	text: 'Second test todo'
-}];
+const { todos, populateTodos } = require('./seed/seed');
 
-const users = [{
-	_id: new ObjectID(),
-	email: 'First test email'
-}, {
-	_id: new ObjectID(),
-	email: 'Second test email',
-	completed: true,
-	completedAt: 333
-}];
 
+
+beforeEach(populateTodos);
 
 describe('POST /todos', () => {
-	beforeEach((done) => {
-		Todo.remove({}).then(() => {
-			Todo.insertMany(todos)
-		}).then(() => done())
-			
-	});
-
+	
 	it('Should create a new todo', ( done ) => {
 		var text = 'test todo text';
 
@@ -108,50 +89,18 @@ describe('GET /todos/:id', () => {
 		request(app)
 			.get('/todos/' + someId)
 			.expect(404)
-			.end(done());
+			.end(done);
 	})
 
 	it('Should return 404 if WRONG id', (done) => {
 		request(app)
-			.get('todos/' + '123')
+			.get('/todos/' + '123')
 			.expect(404)
-			.end(done());
+			.end(done);
 	})
 });
 
-// describe('DELETE /todos/:id', () => {
 
-// 	it('Should remove a todo', ( done ) => {
-
-// 		var id = todos[0]._id
-// 		request(app)
-// 			.delete('/todos/' + id )
-// 			.expect(200)
-// 			.expect((res) => {
-// 				expect(res._id).toBe(id);
-// 			})
-// 			.end(done())
-
-// 	})
-
-// 	it('Should return 404 if todo not found', ( done ) => {
-// 		var invalidId = new ObjectID().toHexString();
-
-// 		request(app)
-// 			.delete('/todos/' + invalidId )
-// 			.expect(400)
-// 			.end(done())
-// 	});
-
-// 	it('Should return 404 if ObjectID is invalid', ( done ) => {
-// 		let invalidId =  todos[0]._id + '123';
-
-// 		request(app)
-// 			.delete('/todos/' + invalidId)
-// 			.expect(404)
-// 			.end(done())
-// 	});
-// });
 
 describe('PATCH /todos/:id', () => {
 
@@ -164,74 +113,60 @@ describe('PATCH /todos/:id', () => {
 			.send({text: newText, completed: true})
 			.expect(200)
 			.expect(( res ) => {
-				expect(res.body.todo.text).toBe(newText)
-				expect(res.body.todo.completed).toBe(false)
-				expect(res.body.todo.completedAt).toBeA('number')
+				expect(res.body.todo.text).toBe(newText);
+				expect(res.body.todo.completed).toBe(true);
+				//expect(res.body.todo.completedAt).toBeA(Number)
 			})
-			.end()
+			.end(done)
 			
 	});
 
-	// it('Should clear completedAt when todo is not completed', ( done ) => {
-	// 	let id = todos[1]._id.toHexString();
-	// 	let newText = 'this is a new test text.'
+	it('Should clear completedAt when todo is not completed', ( done ) => {
+		let id = todos[1]._id.toHexString();
+		let newText = 'this is a new test text.'
 
-	// 	request(app)
-	// 		.patch('/todos/' + id )
-	// 		.send({text: newText, completed: false})
-	// 		.expect(200)
-	// 		.expect((res) => {
-	// 			console.log(res)
-	// 			expect(res)
-	// 		})
-	// 		.end(done)
-	// });
+		request(app)
+			.patch('/todos/' + id )
+			.send({text: newText, completed: false})
+			.expect(200)
+			.expect((res) => {
+				//console.log(res)
+				expect(res.body.todo.completed).toBe(false)
+			})
+			.end(done)
+	});
 });
 
-// beforeEach((done) => {
-// 	User.remove({}).then(() => { 
-// 		return User.insertMany(users); 
-// 	}).then(() => done());
-// });
+describe('DELETE /todos/:id', () => {
+	var id = todos[0]._id.toHexString()
+	it('Should remove a todo', ( done ) => {
 
-// describe('POST /users', () => {
-// 	it('Should create a new user', (done) => {
-// 		let email = 'test@user.com'
+		//var id = todos[0]._id
+		request(app)
+			.delete('/todos/' + id )
+			.expect(200)
+			.expect((res) => {
+				expect(res.body.todo._id).toBe(id);
+			})
+			.end(done)
 
-// 		request(app)
-// 		.post('/users')
-// 		.send({ email })
-// 		.expect(200)
-// 		.expect(( res ) => {
-// 			expect(res.body.doc.email).toBe(email);
-// 		})
-// 		.end(( err, res ) => {
-// 			if ( err ) {
-// 				return done(err);
-// 			}
+	});
 
-// 			User.find().then((users) => {
-// 				expect(users.length).toBe(1);
-// 				expect(users[0].email).toBe(email);
-// 				done();
-// 			}).catch(e => done(e));
-// 		});
-// 	});
-// 	it('Should not create a new user with bad data', (done) => {
+	it('Should return 404 if todo not found', ( done ) => {
+		var invalidId = new ObjectID().toHexString();
+		console.log(invalidId)
+		request(app)
+			.delete('/todos/' + invalidId )
+			.expect(404)
+			.end(done)
+	});
 
-// 		request(app)
-// 			.post('/users')
-// 			.send({})
-// 			.expect(400)
-// 			.end(( err, res) => {
-// 				if ( err ) { 
-// 					return done(err)
-// 				}
+	it('Should return 404 if ObjectID is invalid', ( done ) => {
+		let invalidId =  todos[0]._id.toHexString() + '123';
 
-// 				User.find().then((users) => {
-// 					expect(users.length).toBe(0);
-// 					done()
-// 				}).catch(e => done(e));
-// 			})
-// 	})
-// });
+		request(app)
+			.delete('/todos/' + invalidId)
+			.expect(404)
+			.end(done)
+	});
+});
