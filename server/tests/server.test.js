@@ -191,4 +191,30 @@ describe('GET users/me', () => {
 			})
 			.end(done);
 	})
+});
+
+describe('POST /users', () => {
+	it('Should create a user', ( done ) => {
+		let email = 'example@exm.com';
+		let password = '123456';
+
+		request(app)
+			.post('/users')
+			.send({ email, password })
+			.expect(200)
+			.expect((res) => {
+				expect(typeof res.header['x-auth']).toBe('string');
+				expect(typeof res.body._id).toBe('string');
+				expect(res.body.email).toBe(email);
+			})
+			.end(done)
+	});
+
+	// it('Should return validation error if request invalid', ( done ) => {
+
+	// });
+
+	// it('Should not create user if the email is in use', ( done ) => {
+
+	// });
 })
