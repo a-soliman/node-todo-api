@@ -145,7 +145,17 @@ app.post('/users', ( req, res ) => {
 
 app.get('/users/me', authenticate, ( req, res ) => {
 	res.send(req.user);
-})
+});
+
+// POST users/login
+app.post('/users/login', ( req, res ) => {
+	let email = req.body.email;
+	let password = req.body.password;
+
+	User.findOne({email}).then((user) => {
+		console.log(user)
+	})
+});
 
 app.listen(port, () => {
 	console.log(`Server is on at ${port}.`);
