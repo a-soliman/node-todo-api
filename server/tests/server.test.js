@@ -210,11 +210,25 @@ describe('POST /users', () => {
 			.end(done)
 	});
 
-	// it('Should return validation error if request invalid', ( done ) => {
+	it('Should return validation error if request invalid', ( done ) => {
+		let email = 'notEmail';
+		let password = '123';
 
-	// });
+		request(app)
+			.post('/users')
+			.send({ email, password })
+			.expect(400)
+			.end(done)
+	});
 
-	// it('Should not create user if the email is in use', ( done ) => {
+	it('Should not create user if the email is in use', ( done ) => {
+		let email = users[0].email;
+		let password = users[0].password;
 
-	// });
+		request(app)
+			.post('/users')
+			.send({ email, password })
+			.expect(400)
+			.end(done)
+	});
 })
