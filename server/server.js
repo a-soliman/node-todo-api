@@ -149,12 +149,17 @@ app.get('/users/me', authenticate, ( req, res ) => {
 
 // POST users/login
 app.post('/users/login', ( req, res ) => {
-	let email = req.body.email;
-	let password = req.body.password;
+	let body = _.pick(req.body, ['email', 'password'])
 
-	User.findOne({email}).then((user) => {
-		console.log(user)
-	})
+	User.findByCredentials(body.email, body.password)
+		.then((user) => {
+			//found user
+			res.send(user);
+		})
+		.catch((e) => {
+			//didn't find user || incorrect password
+			res.status(400).send(e);
+		})
 });
 
 app.listen(port, () => {

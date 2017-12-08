@@ -88,6 +88,27 @@ UserSchema.statics.findByToken = function( token ) {
 		'tokens.access': 'auth'
 	})
 }
+UserSchema.statics.findByCredentials = function( email, password ) {
+	let User = this;
+
+	return User.findOne({ email }).then((user) => {
+		if ( !user ) {
+			return Promise.reject('User Not found.');
+		}
+
+		// Found a user and should compare the password.
+		return new Promise((resolve, reject) => {
+			// comapre the password
+			bcrypt.compare(password, user.password, (err, res) => {
+				if( res == true ) {
+					resolve(user);
+				} else {
+					reject('Incorrect Password!');
+				}
+			})
+		})
+	})
+};
 
 const User = mongoose.model('User', UserSchema);
 
