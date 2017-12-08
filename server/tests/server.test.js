@@ -260,7 +260,14 @@ describe('POST /users/login', () => {
 			});
 	});
 
-	// it('Should reject invalid login', ( done ) => {
-
-	// });
+	it('Should reject invalid login', ( done ) => {
+		request(app)
+			.post('/users/login')
+			.send({
+				email: 'invalid-email@email.com',
+				password: 'invalid_password'
+			})
+			.expect(400)
+			.end(done)
+	});
 })
