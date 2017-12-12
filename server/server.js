@@ -73,7 +73,7 @@ app.post('/todos', authenticate, (req, res) => {
 });
 
 // TODO DELETE
-app.delete('/todos/:id', ( req, res ) => {
+app.delete('/todos/:id',authenticate, ( req, res ) => {
 	//get the id
 	let id = req.params['id'];
 
@@ -81,7 +81,10 @@ app.delete('/todos/:id', ( req, res ) => {
 		return res.status(404).send('Invalid Id');
 	}
 
-	Todo.findByIdAndRemove(id)
+	Todo.findOneAndRemove({
+		_id: id,
+		_creater: req.user._id
+	})
 		.then(
 			( todo ) => {
 				if( !todo ) {
@@ -99,9 +102,9 @@ app.delete('/todos/:id', ( req, res ) => {
 })
 
 // TODO UPDATE
-app.patch('/todos/:id' , ( req, res ) => {
+app.patch('/todos/:id', authenticate , ( req, res ) => {
 	let id = req.params['id'];
-
+	
 	//strickting what the user can update
 	let body = _.pick(req.body, ['text', 'completed']);
 
@@ -120,7 +123,11 @@ app.patch('/todos/:id' , ( req, res ) => {
 		body.completedAt = null;
 	}
 
-	Todo.findByIdAndUpdate(id, { $set: body }, { new: true })
+	Todo.findOneAndUpdate({
+		_id: id,
+		_creater: req.user._id
+
+	}, { $set: body }, { new: true })
 		.then(( todo ) => {
 			if( !todo ) {
 				return res.status(404).send();

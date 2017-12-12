@@ -124,6 +124,7 @@ describe('PATCH /todos/:id', () => {
 
 		request(app)
 			.patch('/todos/' + id )
+			.set('x-auth', users[0].tokens[0].token)
 			.send({text: newText, completed: true})
 			.expect(200)
 			.expect(( res ) => {
@@ -135,12 +136,26 @@ describe('PATCH /todos/:id', () => {
 			
 	});
 
+	it('Should NOT update Todo created by other user', (done) => {
+		let id = todos[0]._id.toHexString();
+		let newText = 'this is a new test text.'
+
+		request(app)
+			.patch('/todos/' + id )
+			.set('x-auth', users[1].tokens[0].token)
+			.send({text: newText, completed: true})
+			.expect(404)
+			.end(done)
+			
+	});
+
 	it('Should clear completedAt when todo is not completed', ( done ) => {
 		let id = todos[1]._id.toHexString();
 		let newText = 'this is a new test text.'
 
 		request(app)
 			.patch('/todos/' + id )
+			.set('x-auth', users[1].tokens[0].token)
 			.send({text: newText, completed: false})
 			.expect(200)
 			.expect((res) => {
@@ -151,12 +166,13 @@ describe('PATCH /todos/:id', () => {
 });
 
 describe('DELETE /todos/:id', () => {
-	var id = todos[0]._id.toHexString()
+	var id = todos[1]._id.toHexString()
 	it('Should remove a todo', ( done ) => {
 
 		//var id = todos[0]._id
 		request(app)
 			.delete('/todos/' + id )
+			.set('x-auth', users[1].tokens[0].token)
 			.expect(200)
 			.expect((res) => {
 				expect(res.body.todo._id).toBe(id);
@@ -169,6 +185,7 @@ describe('DELETE /todos/:id', () => {
 		var invalidId = new ObjectID().toHexString();
 		request(app)
 			.delete('/todos/' + invalidId )
+			.set('x-auth', users[1].tokens[0].token)
 			.expect(404)
 			.end(done)
 	});
@@ -178,6 +195,7 @@ describe('DELETE /todos/:id', () => {
 
 		request(app)
 			.delete('/todos/' + invalidId)
+			.set('x-auth', users[1].tokens[0].token)
 			.expect(404)
 			.end(done)
 	});
