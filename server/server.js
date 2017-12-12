@@ -28,14 +28,17 @@ app.get('/todos', authenticate, ( req, res ) => {
 });
 
 // Get one Todo
-app.get('/todos/:id', ( req, res ) => {
+app.get('/todos/:id',authenticate, ( req, res ) => {
 	let id = req.params['id'];
 
 	if( !ObjectID.isValid(id) ) {
 		res.status(404).send('Invalid Id')
 	} 
 	else {
-		Todo.findById(id)
+		Todo.findOne({
+			_id: id,
+			_creater: req.user._id
+		})
 			.then( 
 				( todo ) => {
 					if( !todo ) {

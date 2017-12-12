@@ -78,6 +78,7 @@ describe('GET /todos/:id', () => {
 	it('Should return todo doc', (done) => {
 		request(app)
 			.get('/todos/' + todos[0]._id)
+			.set('x-auth', users[0].tokens[0].token)
 			.expect(200)
 			.expect(( res ) => {
 				expect(res.body.todo.text).toBe(todos[0].text)
@@ -91,13 +92,23 @@ describe('GET /todos/:id', () => {
 
 		request(app)
 			.get('/todos/' + someId)
+			.set('x-auth', users[0].tokens[0].token)
 			.expect(404)
 			.end(done);
-	})
+	});
+
+	it('Should NOT return a todo doc created by other user', ( done ) => {
+		request(app)
+			.get('/todos/' + todos[1]._id.toHexString())
+			.set('x-auth', users[0].tokens[0].token)
+			.expect(404)
+			.end(done)
+	});
 
 	it('Should return 404 if WRONG id', (done) => {
 		request(app)
 			.get('/todos/' + '123')
+			.set('x-auth', users[0].tokens[0].token)
 			.expect(404)
 			.end(done);
 	})
@@ -255,8 +266,8 @@ describe('POST /users/login', () => {
 
 				User.findById(users[1]._id)
 					.then(( user ) => {
-						expect(user.tokens[0].access).toBe('auth')
-						expect(user.tokens[0].token).toBe(res.headers['x-auth'])
+						expect(user.tokens[1].access).toBe('auth')
+						expect(user.tokens[1].token).toBe(res.headers['x-auth'])
 						done()
 					})
 					.catch((e) => done(e))
