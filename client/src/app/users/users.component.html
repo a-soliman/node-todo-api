@@ -1,0 +1,16 @@
+
+<app-user-signup *ngIf="displySignup"></app-user-signup>
+<app-user-login *ngIf="displyLogin"></app-user-login>
+
+<button 
+	class="btn btn-primary" 
+	(click)="toggleLoginForm()"
+	*ngIf="!displyLogin">
+		Login
+</button>
+<button 
+	class="btn btn-success" 
+	(click)="toggleSignUpForm()" 
+	*ngIf="!displySignup">
+		Signup
+</button>
