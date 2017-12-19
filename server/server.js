@@ -16,6 +16,14 @@ const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
+app.use(function (req, res, next) {
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+	res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+	res.setHeader('Access-Control-Allow-Credentials', true);
+	next();
+});
+
 // TODO GET
 app.get('/todos', authenticate, ( req, res ) => {
 	Todo.find({
@@ -142,6 +150,7 @@ app.patch('/todos/:id', authenticate , ( req, res ) => {
 
 // USER POST
 app.post('/users', ( req, res ) => {
+	console.log('recieving request === ')
 	let body = _.pick(req.body, ['email', 'password']);
 	
 	let user = new User(body)
