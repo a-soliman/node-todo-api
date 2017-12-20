@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Http, Headers, RequestOptions, Response, ResponseOptions} from '@angular/http';
+
 import { UsersService } from '../users.service';
 import { User } from '../user';
 
@@ -14,7 +16,9 @@ export class UserLoginComponent implements OnInit {
 	email: string;
 	password: string;
 
-	constructor( private _usersService: UsersService ) { }
+	public loggedinUser = null;
+
+	constructor( private _usersService: UsersService, private _http: Http ) { }
 
 	ngOnInit() {
 	}
@@ -27,9 +31,9 @@ export class UserLoginComponent implements OnInit {
 
 		this._usersService.login( user )
 			.subscribe((data) => {
-				console.log(data)
+				this.loggedinUser = data;
+				localStorage.setItem('user', this.loggedinUser);
+				console.log(this.loggedinUser);
 			})
-
-
 	}
 }
