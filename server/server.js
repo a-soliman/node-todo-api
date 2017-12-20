@@ -19,8 +19,9 @@ app.use(bodyParser.json());
 app.use(function (req, res, next) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
 	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-	res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+	//res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 	res.setHeader('Access-Control-Allow-Credentials', true);
+	res.setHeader('Access-Control-Allow-Headers', '*');
 	next();
 });
 
@@ -178,7 +179,15 @@ app.post('/users/login', ( req, res ) => {
 			//found user set it's token
 			return user.generateAuthToken()
 				.then((token) => {
-					res.header( 'x-auth', token ).send(user);
+					let modifiedUser = {
+						id: user.id,
+						email: user.email,
+						'x-auth': token
+					}
+					res.set({
+						'Content-Type': 'application/json',
+						'exxxx' : 'GG-Test-GG'
+					}).send(modifiedUser);
 				});
 			
 		})
