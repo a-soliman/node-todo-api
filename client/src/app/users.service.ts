@@ -17,13 +17,11 @@ export class UsersService {
   }
 
   login ( user ) {
-  	let headers = new Headers();
-  	headers.append('Content-Type', 'application/json');
-
   	let url = 'http://localhost:3000/users/login';
 
-  	return this._http.post(url, user, {headers: headers})
-  		.map( res => res.json());
+    return this._http.post("http://localhost:3000/users/login", user)
+      .map( res => res.json());
+
   }
 
   // updateUser
