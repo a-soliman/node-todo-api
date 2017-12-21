@@ -63,7 +63,6 @@ export class UsersComponent implements OnInit {
 	}
 
 	signup( user ) {
-		
 		this._usersService.createUser(user)
 			.subscribe((data) => {
 				console.log(data);
@@ -74,18 +73,11 @@ export class UsersComponent implements OnInit {
 	}
 
 	login( user ) {
-
 		this._usersService.login( user )
 			.subscribe((data) => {
 				this.loggedinUser = data;
 				localStorage.setItem('user', JSON.stringify(data));
-				if(localStorage.getItem('user') !== null) {
-					this.user.emit(JSON.parse(localStorage.getItem('user')))
-				} else {
-					this.user.emit('No User in localstorage')
-				}
-				
-				console.log(this.user);
+				this.user.emit(JSON.parse(localStorage.getItem('user')))
 				this.displyLogin = false;
 			})
 	}
