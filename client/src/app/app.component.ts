@@ -10,11 +10,12 @@ import { UsersService } from './users.service'
 })
 
 export class AppComponent  {
-	user;
+	user = JSON.parse(localStorage.getItem('user'));
 
 	constructor() {
 		
 	}
+	OnInit() {}
 
 	bindUser(user) {
 		this.user = user;
