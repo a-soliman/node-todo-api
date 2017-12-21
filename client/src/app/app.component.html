@@ -1,5 +1,10 @@
 <div class="container">
-	<app-users></app-users>
+	<app-users (user)="bindUser($event)"></app-users>
+
+	<div *ngIf="user">
+		<app-todos></app-todos>
+	</div>
+
 </div>
 
 
