@@ -1,4 +1,6 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { UsersService } from '../users.service';
 import { User } from '../user';
 
@@ -8,7 +10,12 @@ import { User } from '../user';
   styleUrls: ['./users.component.css'],
   providers: [ UsersService ]
 })
+
+
 export class UsersComponent implements OnInit {
+	loginForm: FormGroup;
+	signupForm: FormGroup;
+
 	users: User[];
 
 	email: string;
@@ -21,7 +28,18 @@ export class UsersComponent implements OnInit {
 
 
 
-	constructor( private _usersService: UsersService ) { }
+	constructor( private _usersService: UsersService, 
+				 private fb: FormBuilder ) { 
+		this.loginForm = fb.group({
+			'email': [null, Validators.compose([ Validators.required, Validators.email ])],
+			'password': [null, Validators.compose([ Validators.required, Validators.minLength(6), Validators.maxLength(20)])]
+		});
+
+		this.signupForm = fb.group({
+			'email': [null, Validators.compose([ Validators.required, Validators.email ])],
+			'password': [null, Validators.compose([ Validators.required, Validators.minLength(6), Validators.maxLength(20)])]
+		})
+	}
 
 	ngOnInit() {
 		if(localStorage.user) {
@@ -44,38 +62,40 @@ export class UsersComponent implements OnInit {
 		this.displyLogin = !this.displyLogin;
 	}
 
-	signup() {
-		let newUser = {
-			email: this.email,
-			password: this.password
-		}
+	signup( user ) {
+		console.log('signup: ', user)
+		// let newUser = {
+		// 	email: this.email,
+		// 	password: this.password
+		// }
 		
-		this._usersService.createUser(newUser)
-			.subscribe((data) => {
-				console.log(data);
-				this.displySignup = false;
+		// this._usersService.createUser(newUser)
+		// 	.subscribe((data) => {
+		// 		console.log(data);
+		// 		this.displySignup = false;
 
-				this.login(newUser);
-			})
+		// 		this.login(data);
+		// 	})
 	}
 
-	login(user) {
-		if(!user) {
-			let user = {
-				email: this.email,
-				password: this.password
-			}
-		}
-		console.log(this)
+	login( user ) {
+		console.log('LOGIN: ', user)
+		// if(!user) {
+		// 	user = {
+		// 		email: this.email,
+		// 		password: this.password
+		// 	}
+		// }
+		// console.log(user)
 
-		this._usersService.login( user )
-			.subscribe((data) => {
-				this.loggedinUser = data;
-				localStorage.setItem('user', JSON.stringify(data));
-				this.user = JSON.parse(localStorage.getItem('user'));
-				console.log(this.user);
-				this.displyLogin = false;
-			})
+		// this._usersService.login( user )
+		// 	.subscribe((data) => {
+		// 		this.loggedinUser = data;
+		// 		localStorage.setItem('user', JSON.stringify(data));
+		// 		this.user = JSON.parse(localStorage.getItem('user'));
+		// 		console.log(this.user);
+		// 		this.displyLogin = false;
+		// 	})
 	}
 
 	signout() {

@@ -6,37 +6,78 @@
 
 <div *ngIf="displySignup">
 	<h2 class="page-header">Sign Up</h2>
-	<form (submit) = "signup()">
+	<form [formGroup]="signupForm" (ngSubmit)="signup(signupForm.value)">
 		
 		<div class="form-group">
 			<label for="email">Email</label>
-			<input type="text" [(ngModel)] = "email" name="email" class="form-control" required>
+			<input 
+				type="text" 
+				formControlName="email" 
+				name="email" 
+				class="form-control">
 		</div>
 
-			<div class="form-group">
+		<div 
+			*ngIf="!signupForm.controls['email'].valid && signupForm.controls['email'].touched"
+			class="alert-alert-danger">
+			Please provide a valid email address
+		</div>
+
+		<div class="form-group">
 			<label for="password">Password</label>
-			<input type="text" [(ngModel)] = "password" name="password" class="form-control" required>
+			<input
+				formControlName="password" 
+				type="password" 
+				name="password" 
+				class="form-control">
 		</div>
 
-		<input type="submit" class="btn btn-success" value="Sign Up">
+		<div 
+			*ngIf="!signupForm.controls['password'].valid && signupForm.controls['password'].touched"
+			class="alert-alert-danger">
+			**ERROR Message**
+		</div>
+
+		<input type="submit" class="btn btn-success" value="Sign Up" [disabled]="!signupForm.valid" >
 
 	</form>
 </div>
+
 <div *ngIf="displyLogin">
 	<h2 class="page-header">Login</h2>
-	<form (submit) = "login()">
+	<form [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)">
 		
 		<div class="form-group">
 			<label for="email">Email</label>
-			<input type="text" [(ngModel)] = "email" name="email" class="form-control" required>
+			<input 
+				type="text" 
+				formControlName="email" 
+				name="email" 
+				class="form-control">
 		</div>
 
-			<div class="form-group">
+		<div 
+			*ngIf="!loginForm.controls['email'].valid && loginForm.controls['email'].touched"
+			class="alert-alert-danger">
+			Please provide a valid email address
+		</div>
+
+		<div class="form-group">
 			<label for="password">Password</label>
-			<input type="text" [(ngModel)] = "password" name="password" class="form-control" required>
+			<input
+				formControlName="password" 
+				type="password" 
+				name="password" 
+				class="form-control">
 		</div>
 
-		<input type="submit" class="btn btn-success" value="Login">
+		<div 
+			*ngIf="!loginForm.controls['password'].valid && loginForm.controls['password'].touched"
+			class="alert-alert-danger">
+			**ERROR Message**
+		</div>
+
+		<input type="submit" class="btn btn-success" value="Sign Up" [disabled]="!loginForm.valid" >
 
 	</form>
 </div>
