@@ -1,3 +1,16 @@
-<p>
-  todos works!
-</p>
+<ul *ngFor="let todo of todos">
+	<li>{{todo.text}}</li>
+</ul>
+
+<form class="form" [formGroup]="addTodoForm" (ngSubmit)="addTodo(addTodoForm.value)">
+	<div class="form-grop">
+		<textarea 
+			name="todo_text" 
+			formControlName="todo_text" 
+			class="form-control" 
+			cols="5" 
+			rows="2">
+		</textarea>
+	</div>
+	<input type="submit" value="Add Todo" class="btn btn-success" [disabled]="!addTodoForm.valid">
+</form>
