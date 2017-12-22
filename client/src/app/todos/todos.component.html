@@ -1,5 +1,22 @@
 <ul *ngFor="let todo of todos">
-	<li>{{todo.text}}</li>
+	<li>
+		{{todo.text}} - {{todo.completed}} - {{todo.completedAt}}
+		<button 
+			*ngIf="!todo.completed"
+			class="btn btn-xs btn-success" 
+			(click)="markDone(todo._id)">
+				D
+		</button>
+
+		<button 
+			*ngIf="todo.completed"
+			class="btn btn-xs btn-warning" 
+			(click)="unMarkDone(todo._id)">
+				U
+		</button>
+
+		<button class="btn btn-xs btn-danger" (click)="removeTodo(todo._id)">X</button>
+	</li>
 </ul>
 
 <form class="form" [formGroup]="addTodoForm" (ngSubmit)="addTodo(addTodoForm.value)">

@@ -33,8 +33,47 @@ export class TodosService {
   		.map(res => res.json())
   }
 
-  // editTodo
+  markDoneTodo (id, user) {
+  	let url = `http://localhost:3000/todos/${id}`;
 
-  // deleteTodo
+  	let headers = new Headers();
+  	headers.append('x-auth', user['x-auth']);
+
+  	return this._http.patch(url, {completed: true}, {headers})
+  		.map(res => res.json());
+
+  }
+
+  unMarkDoneTodo ( id, user ) {
+  	let url = `http://localhost:3000/todos/${id}`;
+
+  	let headers = new Headers();
+  	headers.append('x-auth', user['x-auth']);
+
+  	return this._http.patch(url, {completed: false}, {headers})
+  		.map(res => res.json());
+  }
+
+  editTodo ( todo, user ) {
+  	let url = `http://localhost:3000/todos/${todo.id}`;
+  	let text = todo.text;
+
+  	let headers = new Headers();
+  	headers.append('x-auth', user['x-auth']);
+
+  	return this._http.patch(url, { text }, { headers})
+  		.map(res => res.json());
+  	
+  } 
+
+  removeTodo(id, user) {
+  	let url = `http://localhost:3000/todos/${id}`;
+
+  	let headers = new Headers();
+  	headers.append('x-auth', user['x-auth']);
+
+  	return this._http.delete(url, { headers })
+  		.map(res => res.json());
+  }
 
 }

@@ -30,7 +30,8 @@ export class TodosComponent implements OnInit {
 	getTodos() {
 		this._todosService.getTodos(this.user)
 			.subscribe((res) => {
-				this.todos = res.todos;			})
+				this.todos = res.todos;			
+			})
 	}
 
 	addTodo( todoFormValue ) {
@@ -39,9 +40,46 @@ export class TodosComponent implements OnInit {
 		this._todosService.addTodo(todoText, this.user)
 			.subscribe((res) => {
 				console.log('Added')
+				this.getTodos();
 			})
-		this.getTodos();
+		
 	}
+
+	markDone( id ) {
+		this._todosService.markDoneTodo(id, this.user)
+			.subscribe((res ) => {
+				console.log('Edited')
+				this.getTodos();
+			})
+	}
+
+	unMarkDone ( id ) {
+		this._todosService.unMarkDoneTodo(id, this.user)
+			.subscribe((res ) => {
+				console.log('Undo...')
+				this.getTodos();
+			})
+	}
+
+	editTodo( id ) {
+
+	}
+
+	removeTodo( id ) {
+		let c = confirm('Confim: remove todo?')
+
+		if( c === true) {
+			this._todosService.removeTodo(id, this.user)
+				.subscribe((res) => {
+					console.log(res);
+					this.getTodos()
+				});
+		} 
+		else {
+			return;
+		}
+	}
+
 
 
 
