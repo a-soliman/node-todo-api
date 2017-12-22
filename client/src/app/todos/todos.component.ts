@@ -3,6 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { TodosService } from '../todos.service';
 
+declare var jquery:any;
+declare var $ :any;
+
+
 @Component({
   selector: 'app-todos',
   templateUrl: './todos.component.html',
@@ -47,7 +51,6 @@ export class TodosComponent implements OnInit {
 		
 		this._todosService.addTodo(todoText, this.user)
 			.subscribe((res) => {
-				console.log('Added')
 				this.getTodos();
 			})
 		
@@ -56,7 +59,6 @@ export class TodosComponent implements OnInit {
 	markDone( id ) {
 		this._todosService.markDoneTodo(id, this.user)
 			.subscribe((res ) => {
-				console.log('Edited')
 				this.getTodos();
 			})
 	}
@@ -64,18 +66,25 @@ export class TodosComponent implements OnInit {
 	unMarkDone ( id ) {
 		this._todosService.unMarkDoneTodo(id, this.user)
 			.subscribe((res ) => {
-				console.log('Undo...')
 				this.getTodos();
 			})
 	}
 
 	editTodo( todo, newText ) {
-		console.log(newText, todo)
+		this._todosService.editTodo( todo, newText, this.user)
+			.subscribe((res) => {
+				this.todoToEdit = null;
+				this.getTodos();
+				this.hideEditTodoModal();
+			})
 	}
 
 	setTodoToEdit ( todo ) {
 		this.todoToEdit = todo;
-		console.log('set ,', this.todoToEdit)
+	}
+
+	hideEditTodoModal() {
+		$('#editTodoModal').modal('hide');
 	}
 
 	removeTodo( id ) {
@@ -83,7 +92,6 @@ export class TodosComponent implements OnInit {
 		if( this.confirmDeletion() ) {
 			this._todosService.removeTodo(id, this.user)
 				.subscribe((res) => {
-					console.log(res);
 					this.getTodos()
 				});
 		}
@@ -95,12 +103,4 @@ export class TodosComponent implements OnInit {
 
 		return c === true ? true : false;
 	}
-
-	togleEditForm () {
-		this.showEditTodoForm = !this.showEditTodoForm;
-	}
-
-
-
-
 }

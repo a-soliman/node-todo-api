@@ -54,10 +54,10 @@ export class TodosService {
   		.map(res => res.json());
   }
 
-  editTodo ( todo, user ) {
-  	let url = `http://localhost:3000/todos/${todo.id}`;
-  	let text = todo.text;
-
+  editTodo ( todo, newText, user ) {
+  	let url = `http://localhost:3000/todos/${todo._id}`;
+  	let text = newText.todo_text;
+  	console.log(text)
   	let headers = new Headers();
   	headers.append('x-auth', user['x-auth']);
 

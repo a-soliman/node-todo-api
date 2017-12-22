@@ -52,7 +52,7 @@
 <div 
 	*ngIf="todoToEdit" class="modal fade" id="editTodoModal" tabindex="-1" role="dialog" aria-labelledby="editTodoModal" aria-hidden="true">
 	<div class="modal-dialog" role="document">
-  		<form class="form" [formGroup]="editTodoForm" (ngSubmit)="editTodo(todo, editTodoForm.value)">
+  		<form class="form" [formGroup]="editTodoForm" (ngSubmit)="editTodo(todoToEdit, editTodoForm.value)">
     		<div class="modal-content">
       			<div class="modal-header">
         			<h5 class="modal-title" id="exampleModalLabel">Edit ToDo</h5>
