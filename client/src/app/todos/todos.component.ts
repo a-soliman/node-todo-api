@@ -15,11 +15,19 @@ export class TodosComponent implements OnInit {
 	todos;
 
 	addTodoForm: FormGroup;
+	editTodoForm: FormGroup;
+
+	showEditTodoForm: boolean = false;
+	todoToEdit = null;
 
 	constructor( private _todosService: TodosService,
 				 private fb: FormBuilder ) { 
 		this.addTodoForm = fb.group({
 			'todo_text': [null, Validators.compose([ Validators.required, Validators.minLength(6)])]
+		});
+
+		this.editTodoForm = fb.group({
+			'todo_text': [ null, Validators.compose([ Validators.required, Validators.minLength(6)])]
 		});
 	}
 
@@ -61,23 +69,35 @@ export class TodosComponent implements OnInit {
 			})
 	}
 
-	editTodo( id ) {
+	editTodo( todo, newText ) {
+		console.log(newText, todo)
+	}
 
+	setTodoToEdit ( todo ) {
+		this.todoToEdit = todo;
+		console.log('set ,', this.todoToEdit)
 	}
 
 	removeTodo( id ) {
-		let c = confirm('Confim: remove todo?')
 
-		if( c === true) {
+		if( this.confirmDeletion() ) {
 			this._todosService.removeTodo(id, this.user)
 				.subscribe((res) => {
 					console.log(res);
 					this.getTodos()
 				});
-		} 
-		else {
-			return;
 		}
+		return;
+	}
+
+	confirmDeletion () {
+		let c = confirm('Are you sure, you want to remove this Todo?');
+
+		return c === true ? true : false;
+	}
+
+	togleEditForm () {
+		this.showEditTodoForm = !this.showEditTodoForm;
 	}
 
 
