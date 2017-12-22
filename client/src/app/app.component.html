@@ -2,7 +2,7 @@
 	<app-users (user)="bindUser($event)"></app-users>
 
 	<div *ngIf="user">
-		<app-todos></app-todos>
+		<app-todos [user]="user"></app-todos>
 	</div>
 
 </div>
