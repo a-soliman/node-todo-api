@@ -10,7 +10,7 @@ declare var $ :any;
 @Component({
   selector: 'app-todos',
   templateUrl: './todos.component.html',
-  styleUrls: ['./todos.component.css'],
+  styles: ['./todos.component.css'],
   providers: [ TodosService ]
 })
 
@@ -85,7 +85,12 @@ export class TodosComponent implements OnInit {
 	}
 
 	hideEditTodoModal() {
-		$('#editTodoModal').modal('hide');
+		let form = document.getElementById('editTodoModal');
+
+		if( form.style.display !== 'none') {
+			form.style.display = "none";
+		}
+		return;
 	}
 
 	removeTodo( id ) {
