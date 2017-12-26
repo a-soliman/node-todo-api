@@ -79,6 +79,7 @@ export class UsersComponent implements OnInit {
 				localStorage.setItem('user', JSON.stringify(data));
 				this.user.emit(JSON.parse(localStorage.getItem('user')))
 				this.displyLogin = false;
+				this.loginForm.reset();
 			})
 	}
 
