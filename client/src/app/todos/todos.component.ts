@@ -52,6 +52,7 @@ export class TodosComponent implements OnInit {
 		this._todosService.addTodo(todoText, this.user)
 			.subscribe((res) => {
 				this.getTodos();
+				this.addTodoForm.reset();
 			})
 		
 	}
