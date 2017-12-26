@@ -1,6 +1,6 @@
 <ul>
 	<li *ngFor="let todo of todos">
-		{{todo.text}} - {{todo.completed}} - {{todo.completedAt}}
+		<h5>{{todo.text}} - {{todo.completed}} - <span *ngIf="todo.completed">{{ (todo.completedAt | amFromUnix) | amDateFormat:' MM-DD-YYYY hh:mmA' }}</span></h5>
 		
 		<button 
 			class="btn btn-xs btn-primary"

@@ -1,10 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { TodosService } from '../todos.service';
+//import * as moment from 'moment/min/moment-with-locales.min.js';
 
-declare var jquery:any;
-declare var $ :any;
+import { TodosService } from '../todos.service';
 
 
 @Component({
@@ -37,13 +36,26 @@ export class TodosComponent implements OnInit {
 
 	ngOnInit() {
 		this.getTodos()
+		
 	}
 
-	getTodos() {
+	getTodos(): void {
 		this._todosService.getTodos(this.user)
 			.subscribe((res) => {
-				this.todos = res.todos;			
+				this.todos = res.todos;		
 			})
+	}
+
+	momentTime( todos ) {
+		// console.log(moment())
+		// if( !this.todos.length ) { return; }
+
+		// this.todos.forEach(( todo ) => {
+		// 	if ( todo.completed === true ) {
+		// 		todo.completedAt = moment().format(todo.completedAt)
+		// 	}
+		// })
+		// return todos;
 	}
 
 	addTodo( todoFormValue ) {
