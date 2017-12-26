@@ -124,7 +124,8 @@ app.patch('/todos/:id', authenticate , ( req, res ) => {
 	//checking if .completed is a boolean and if it's true
 	if(_.isBoolean(body.completed) && body.completed) {
 		
-		body.completedAt = new Date().getTime();
+		const now = new Date().getTime();
+		body.completedAt = Math.round(now / 1000);
 
 	}
 	else {
