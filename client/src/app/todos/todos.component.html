@@ -1,6 +1,10 @@
 <ul>
-	<li *ngFor="let todo of todos">
-		<h5>{{todo.text}} - {{todo.completed}} - <span *ngIf="todo.completed">{{ (todo.completedAt | amFromUnix) | amDateFormat:' MM-DD-YYYY hh:mmA' }}</span></h5>
+	<li 
+		*ngFor="let todo of todos"
+		class="alert"
+		[class.alert-success]="todo.completedAt"
+		[class.alert-danger]="!todo.completedAt" >
+		<h5 >{{todo.text}} - {{todo.completed}} - <span *ngIf="todo.completed">{{ (todo.completedAt | amFromUnix) | amDateFormat:' MM-DD-YYYY hh:mmA' }}</span></h5>
 		
 		<button 
 			class="btn btn-xs btn-primary"
@@ -40,7 +44,8 @@
 			formControlName="todo_text" 
 			class="form-control" 
 			cols="5" 
-			rows="2">
+			rows="2"
+			placeholder="Add todo text">
 		</textarea>
 	</div>
 	<input type="submit" value="Add Todo" class="btn btn-success" [disabled]="!addTodoForm.valid">
