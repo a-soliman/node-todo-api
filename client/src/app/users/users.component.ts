@@ -67,7 +67,7 @@ export class UsersComponent implements OnInit {
 			.subscribe((data) => {
 				console.log(data);
 				this.displySignup = false;
-
+				this.signupForm.reset();
 				this.login(user);
 			})
 	}
