@@ -3,7 +3,8 @@ const config 			= require('./config/config.js');
 const _					= require('lodash')
 const express 	 		= require('express');
 const bodyParser 		= require('body-parser');
-const { ObjectID } 		= require('mongodb')
+const { ObjectID } 		= require('mongodb');
+const path 				= require('path');
 
 const {mongoose} 		= require('./db/mongoose');
 const {Todo} 	 		= require('./models/todo');
@@ -13,6 +14,8 @@ const { authenticate }	= require('./middleware/authenticate')
 let app = express();
 
 const port = process.env.PORT || 3000;
+
+app.use(express.static(path.join(__dirname, '../client/dist')));
 
 app.use(bodyParser.json());
 
@@ -208,6 +211,10 @@ app.delete('/users/me/token', authenticate, ( req, res ) => {
 			() => {
 				res.status(400).send();
 			});
+});
+
+app.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname, '../client/dist/index.html'))
 });
 
 app.listen(port, () => {
