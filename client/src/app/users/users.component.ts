@@ -25,6 +25,8 @@ export class UsersComponent implements OnInit {
 	displyLogin = false;
 	loggedinUser = false;
 
+	userObject: User
+
 	@Output() user = new EventEmitter();
 
 
@@ -44,12 +46,13 @@ export class UsersComponent implements OnInit {
 	ngOnInit() {
 		if(localStorage.user) {
 			this.loggedinUser = true;
+			this.user.emit(JSON.parse(localStorage.getItem('user')));
+			this.userObject = JSON.parse(localStorage.getItem('user'))
 		}
 	}
 	OnChanges() {
 		this.displyLogin = localStorage.user?true:false;
 		this.displyLogin = localStorage.user?true:false;
-		console.log('change happed')
 	}
 
 	toggleSignUpForm() {
@@ -65,7 +68,6 @@ export class UsersComponent implements OnInit {
 	signup( user ) {
 		this._usersService.createUser(user)
 			.subscribe((data) => {
-				console.log(data);
 				this.displySignup = false;
 				this.signupForm.reset();
 				this.login(user);
@@ -77,12 +79,11 @@ export class UsersComponent implements OnInit {
 			.subscribe((data) => {
 				this.loggedinUser = data;
 				this.user.emit(data);
-				console.log(typeof this.user)
-				this.email = user.email
 				localStorage.setItem('user', JSON.stringify(data));
 				//this.user.emit(JSON.parse(localStorage.getItem('user')))
 				this.displyLogin = false;
 				this.loginForm.reset();
+				this.userObject = JSON.parse(localStorage.getItem('user'))
 			})
 	}
 
@@ -90,6 +91,7 @@ export class UsersComponent implements OnInit {
 		localStorage.removeItem('user');
 		this.user.emit(null)
 		this.loggedinUser = false;
+		this.userObject = null;
 	}
 
 

@@ -46,18 +46,6 @@ export class TodosComponent implements OnInit {
 			})
 	}
 
-	momentTime( todos ) {
-		// console.log(moment())
-		// if( !this.todos.length ) { return; }
-
-		// this.todos.forEach(( todo ) => {
-		// 	if ( todo.completed === true ) {
-		// 		todo.completedAt = moment().format(todo.completedAt)
-		// 	}
-		// })
-		// return todos;
-	}
-
 	addTodo( todoFormValue ) {
 		let todoText = todoFormValue.todo_text;
 		

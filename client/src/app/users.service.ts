@@ -5,27 +5,24 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class UsersService {
+   userUrl: string = 'http://localhost:3000/users';
 
   constructor( private _http: Http ) { }
 
   createUser( newUser ) {
   	let headers = new Headers();
   	headers.append('Content-Type', 'application/json')
-  	let url = 'http://localhost:3000/users';
+  	let url = this.userUrl;
   	return this._http.post(url, newUser, {headers: headers})
   		.map( res => res.json());
   }
 
   login ( user ) {
-  	let url = 'http://localhost:3000/users/login';
+  	let url = `${this.userUrl}/login`;
 
-    return this._http.post("http://localhost:3000/users/login", user)
+    return this._http.post(url, user)
       .map( res => res.json());
 
   }
-
-  // updateUser
-
-  // delete User
 
 }

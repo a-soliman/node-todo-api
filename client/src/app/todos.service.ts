@@ -5,24 +5,24 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class TodosService {
+    todosUrl: string = 'http://localhost:3000/todos';
 
-  constructor( private _http: Http ) { }
+    constructor( private _http: Http ) { }
 
-  getTodos( userObject ) {
+    getTodos( userObject ) {
+      let url = this.todosUrl;
 
-	let url = 'http://localhost:3000/todos'
+    	let headers = new Headers();
+    	headers.append('Content-Type', 'application/json');
+    	headers.append('x-auth', userObject['x-auth']);
+    	
+    	return this._http.get(url, {headers: headers} )
+    		.map(res=> res.json())
 
-	let headers = new Headers();
-	headers.append('Content-Type', 'application/json');
-	headers.append('x-auth', userObject['x-auth']);
-	
-	return this._http.get(url, {headers: headers} )
-		.map(res=> res.json())
-
-  }
+    }
 
   addTodo( text, user ) {
-  	let url = 'http://localhost:3000/todos';
+  	let url = this.todosUrl;
   	text = {text}
   	console.log(text)
   	let headers = new Headers();
@@ -34,7 +34,7 @@ export class TodosService {
   }
 
   markDoneTodo (id, user) {
-  	let url = `http://localhost:3000/todos/${id}`;
+  	let url = `${this.todosUrl}/${id}`;
 
   	let headers = new Headers();
   	headers.append('x-auth', user['x-auth']);
@@ -45,7 +45,7 @@ export class TodosService {
   }
 
   unMarkDoneTodo ( id, user ) {
-  	let url = `http://localhost:3000/todos/${id}`;
+  	let url = `${this.todosUrl}/${id}`;
 
   	let headers = new Headers();
   	headers.append('x-auth', user['x-auth']);
@@ -55,7 +55,7 @@ export class TodosService {
   }
 
   editTodo ( todo, newText, user ) {
-  	let url = `http://localhost:3000/todos/${todo._id}`;
+  	let url = `${this.todosUrl}/${todo._id}`;
   	let text = newText.todo_text;
   	console.log(text)
   	let headers = new Headers();
@@ -67,7 +67,7 @@ export class TodosService {
   } 
 
   removeTodo(id, user) {
-  	let url = `http://localhost:3000/todos/${id}`;
+  	let url = `${this.todosUrl}/${id}`;
 
   	let headers = new Headers();
   	headers.append('x-auth', user['x-auth']);

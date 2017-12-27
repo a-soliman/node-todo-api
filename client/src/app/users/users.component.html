@@ -2,7 +2,7 @@
   <span>TODO APP</span>
   <span class="example-spacer"></span>
   <button mat-button [matMenuTriggerFor]="appMenu" *ngIf="!loggedinUser"><mat-icon>menu</mat-icon> Menu</button>
-  <button mat-button [matMenuTriggerFor]="appMenu" *ngIf="loggedinUser"><mat-icon>menu</mat-icon> {{ user._id }}</button>
+  <button mat-button [matMenuTriggerFor]="appMenu" *ngIf="loggedinUser"><mat-icon>menu</mat-icon> {{ userObject.email }}</button>
 </mat-toolbar>
 
 <mat-menu #appMenu="matMenu">

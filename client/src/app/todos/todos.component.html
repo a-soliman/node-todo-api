@@ -1,7 +1,7 @@
-
-<mat-card class="example-card" *ngFor="let todo of (todos ? todos.slice(0,10): []); let i = index">
+<mat-card class="example-card" 
+*ngFor="let todo of (todos ? todos.slice(0,10): []); let i = index" >
   <mat-card-header>
-    <mat-card-title>
+    <mat-card-title >
 		<h3 >{{ todo.text}}</h3>
     </mat-card-title>
     <mat-card-subtitle *ngIf="todo.completed"> {{ (todo.completedAt | amFromUnix) | amDateFormat:' MM-DD-YYYY hh:mmA' }}</mat-card-subtitle>
@@ -51,59 +51,32 @@
   </mat-card-actions>
 </mat-card>
 
-<!-- <ul>
-	<li 
-		*ngFor="let todo of todos"
-		class="alert"
-		[class.alert-success]="todo.completedAt"
-		[class.alert-danger]="!todo.completedAt" >
-		<h5 >{{todo.text}} - {{todo.completed}} - <span *ngIf="todo.completed">{{ (todo.completedAt | amFromUnix) | amDateFormat:' MM-DD-YYYY hh:mmA' }}</span></h5>
+
+
+<mat-card class="add-todo-card" style="margin-top: 20px;">
+	<form class="example-form" [formGroup]="addTodoForm" (ngSubmit)="addTodo(addTodoForm.value)">
+	  	<mat-form-field class="example-full-width">
+	    	<textarea 
+	    		matInput 
+	    		name="todo_text" 
+				formControlName="todo_text" 
+	    		placeholder="Add todo...">
+	    	</textarea>
+	  	</mat-form-field>
 		
-		<button 
-			class="btn btn-xs btn-primary"
-			(click)="setTodoToEdit( todo )"
-			data-toggle="modal" data-target="#editTodoModal"
-			>
-				E
-		</button>
-		
-		<button 
-			*ngIf="!todo.completed"
-			class="btn btn-xs btn-success" 
-			(click)="markDone(todo._id)">
-				D
-		</button>
+		<mat-card-actions>
+		  	<button 
+	    		mat-button 
+	    		color="warn"
+	    		[disabled]="!addTodoForm.valid"
+	    		matTooltip="Add todo"
+	    	 	matTooltipPosition="above">
+	    			<mat-icon>add</mat-icon>
+	    	</button>
+	  </mat-card-actions>
 
-		<button 
-			*ngIf="todo.completed"
-			class="btn btn-xs btn-warning" 
-			(click)="unMarkDone(todo._id)">
-				U
-		</button>
-
-		<button class="btn btn-xs btn-danger" (click)="removeTodo(todo._id)">X</button>
-		
-		<br>
-	</li>
-	
-</ul> -->
-
-
-
-<form class="form" [formGroup]="addTodoForm" (ngSubmit)="addTodo(addTodoForm.value)">
-	<div class="form-grop">
-		<textarea 
-			name="todo_text" 
-			formControlName="todo_text" 
-			class="form-control" 
-			cols="5" 
-			rows="2"
-			placeholder="Add todo text">
-		</textarea>
-	</div>
-	<input type="submit" value="Add Todo" class="btn btn-success" [disabled]="!addTodoForm.valid">
-</form>
-
+	</form>
+</mat-card>
 
 
 <!-- Modal -->

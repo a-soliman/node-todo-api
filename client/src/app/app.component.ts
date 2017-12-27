@@ -19,6 +19,5 @@ export class AppComponent  {
 
 	bindUser(user) {
 		this.user = user;
-		console.log(this.user)
 	}
 }
