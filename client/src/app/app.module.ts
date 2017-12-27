@@ -2,7 +2,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MomentModule } from 'angular2-moment/moment.module'
+import { MomentModule } from 'angular2-moment/moment.module';
+
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatButtonModule, MatCheckboxModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+
 
 import { AppComponent } from './app.component';
 import { UsersComponent } from './users/users.component';
@@ -23,7 +27,9 @@ import { TodosComponent } from './todos/todos.component';
     FormsModule,
     HttpModule,
     ReactiveFormsModule,
-    MomentModule
+    MomentModule,
+    BrowserAnimationsModule,
+    MatButtonModule, MatCheckboxModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatFormFieldModule,MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

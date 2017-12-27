@@ -1,17 +1,33 @@
+<mat-toolbar color="primary">
+  <span>TODO APP</span>
+  <span class="example-spacer"></span>
+  <button mat-button [matMenuTriggerFor]="appMenu" *ngIf="!loggedinUser"><mat-icon>menu</mat-icon> Menu</button>
+  <button mat-button [matMenuTriggerFor]="appMenu" *ngIf="loggedinUser"><mat-icon>menu</mat-icon> {{ user._id }}</button>
+</mat-toolbar>
+
+<mat-menu #appMenu="matMenu">
+  <button mat-menu-item (click)="toggleSignUpForm()" 
+	*ngIf="!loggedinUser"> Signup</button>
+  <button mat-menu-item (click)="toggleLoginForm()"
+	*ngIf="!loggedinUser"> Login</button>
+  <button mat-menu-item (click)="signout()" 
+	*ngIf="loggedinUser"> Logout</button>
+</mat-menu>
+
+
+
 <div *ngIf="user" >
 	{{user.email}}
 </div>
-<!-- <app-user-signup *ngIf="displySignup"></app-user-signup> -->
-<!-- <app-user-login *ngIf="displyLogin"></app-user-login> -->
 
 <div *ngIf="displySignup">
 	<h2 class="page-header">Sign Up</h2>
-	<form [formGroup]="signupForm" (ngSubmit)="signup(signupForm.value)">
+	<!-- <form [formGroup]="signupForm" (ngSubmit)="signup(signupForm.value)">
 		
-		<div class="form-group">
+		<div class="form-group ">
 			<label for="email">Email</label>
 			<input 
-				type="text" 
+				type="email" 
 				formControlName="email" 
 				name="email" 
 				class="form-control">
@@ -40,12 +56,40 @@
 
 		<input type="submit" class="btn btn-success" value="Sign Up" [disabled]="!signupForm.valid" >
 
+	</form> -->
+
+	<form class="example-form" [formGroup]="signupForm" (ngSubmit)="signup(signupForm.value)">
+		<mat-form-field class="example-full-width">
+	    	<input 
+	    		matInput 
+	    		placeholder="email" 
+	    		type="email" 
+				formControlName="email" 
+				name="email" >
+	  	</mat-form-field>
+
+	  	<mat-form-field class="example-full-width">
+		    <input 
+		    	matInput 
+		    	placeholder="password" 
+		    	type="password" 
+				formControlName="password" 
+				name="password" >
+	 	 </mat-form-field>
+
+	  	<button 
+		  	type="submit"
+		  	mat-button 
+		  	color="accent" 
+		  	[disabled]="!signupForm.valid">
+		  		Signup
+		</button>
 	</form>
 </div>
 
 <div *ngIf="displyLogin">
 	<h2 class="page-header">Login</h2>
-	<form [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)">
+	<!-- <form [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)">
 		
 		<div class="form-group">
 			<label for="email">Email</label>
@@ -79,12 +123,41 @@
 
 		<input type="submit" class="btn btn-success" value="Login" [disabled]="!loginForm.valid" >
 
+	</form> -->
+
+	<form class="example-form" [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)">
+  		<mat-form-field class="example-full-width">
+    		<input 
+	    		matInput 
+	    		placeholder="email" 
+	    		type="email" 
+				formControlName="email" 
+				name="email" >
+  		</mat-form-field>
+
+  		<mat-form-field class="example-full-width">
+		    <input 
+		    	matInput 
+		    	placeholder="password" 
+		    	type="password" 
+				formControlName="password" 
+				name="password" >
+	 	 </mat-form-field>
+
+
+   	 	<button 
+		  	type="submit"
+		  	mat-button 
+		  	color="accent" 
+		  	[disabled]="!loginForm.valid">
+		  		Login
+		</button>
 	</form>
 </div>
 
 
 
-<button 
+<!-- <button 
 	class="btn btn-primary" 
 	(click)="toggleLoginForm()"
 	*ngIf="!displyLogin && !loggedinUser">
@@ -101,4 +174,4 @@
 	(click)="signout()" 
 	*ngIf="loggedinUser">
 		Logout
-</button>
+</button> -->

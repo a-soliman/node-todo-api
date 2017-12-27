@@ -76,8 +76,11 @@ export class UsersComponent implements OnInit {
 		this._usersService.login( user )
 			.subscribe((data) => {
 				this.loggedinUser = data;
+				this.user.emit(data);
+				console.log(typeof this.user)
+				this.email = user.email
 				localStorage.setItem('user', JSON.stringify(data));
-				this.user.emit(JSON.parse(localStorage.getItem('user')))
+				//this.user.emit(JSON.parse(localStorage.getItem('user')))
 				this.displyLogin = false;
 				this.loginForm.reset();
 			})
