@@ -22,41 +22,6 @@
 
 <div *ngIf="displySignup">
 	<h2 class="page-header">Sign Up</h2>
-	<!-- <form [formGroup]="signupForm" (ngSubmit)="signup(signupForm.value)">
-		
-		<div class="form-group ">
-			<label for="email">Email</label>
-			<input 
-				type="email" 
-				formControlName="email" 
-				name="email" 
-				class="form-control">
-		</div>
-
-		<div 
-			*ngIf="!signupForm.controls['email'].valid && signupForm.controls['email'].touched"
-			class="alert-alert-danger">
-			Please provide a valid email address
-		</div>
-
-		<div class="form-group">
-			<label for="password">Password</label>
-			<input
-				formControlName="password" 
-				type="password" 
-				name="password" 
-				class="form-control">
-		</div>
-
-		<div 
-			*ngIf="!signupForm.controls['password'].valid && signupForm.controls['password'].touched"
-			class="alert-alert-danger">
-			**ERROR Message**
-		</div>
-
-		<input type="submit" class="btn btn-success" value="Sign Up" [disabled]="!signupForm.valid" >
-
-	</form> -->
 
 	<form class="example-form" [formGroup]="signupForm" (ngSubmit)="signup(signupForm.value)">
 		<mat-form-field class="example-full-width">
@@ -89,41 +54,6 @@
 
 <div *ngIf="displyLogin">
 	<h2 class="page-header">Login</h2>
-	<!-- <form [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)">
-		
-		<div class="form-group">
-			<label for="email">Email</label>
-			<input 
-				type="text" 
-				formControlName="email" 
-				name="email" 
-				class="form-control">
-		</div>
-
-		<div 
-			*ngIf="!loginForm.controls['email'].valid && loginForm.controls['email'].touched"
-			class="alert-alert-danger">
-			Please provide a valid email address
-		</div>
-
-		<div class="form-group">
-			<label for="password">Password</label>
-			<input
-				formControlName="password" 
-				type="password" 
-				name="password" 
-				class="form-control">
-		</div>
-
-		<div 
-			*ngIf="!loginForm.controls['password'].valid && loginForm.controls['password'].touched"
-			class="alert-alert-danger">
-			**ERROR Message**
-		</div>
-
-		<input type="submit" class="btn btn-success" value="Login" [disabled]="!loginForm.valid" >
-
-	</form> -->
 
 	<form class="example-form" [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)">
   		<mat-form-field class="example-full-width">
@@ -154,24 +84,3 @@
 		</button>
 	</form>
 </div>
-
-
-
-<!-- <button 
-	class="btn btn-primary" 
-	(click)="toggleLoginForm()"
-	*ngIf="!displyLogin && !loggedinUser">
-		Login
-</button>
-<button 
-	class="btn btn-success" 
-	(click)="toggleSignUpForm()" 
-	*ngIf="!displySignup && !loggedinUser">
-		Signup
-</button>
-<button 
-	class="btn btn-danger" 
-	(click)="signout()" 
-	*ngIf="loggedinUser">
-		Logout
-</button> -->

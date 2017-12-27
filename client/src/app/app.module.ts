@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MomentModule } from 'angular2-moment/moment.module';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule, MatCheckboxModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import {MatButtonModule, MatCheckboxModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatFormFieldModule, MatInputModule, MatTooltipModule } from '@angular/material';
 
 
 import { AppComponent } from './app.component';
@@ -29,7 +29,7 @@ import { TodosComponent } from './todos/todos.component';
     ReactiveFormsModule,
     MomentModule,
     BrowserAnimationsModule,
-    MatButtonModule, MatCheckboxModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatFormFieldModule,MatInputModule
+    MatButtonModule, MatCheckboxModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatFormFieldModule,MatInputModule, MatTooltipModule
   ],
   providers: [],
   bootstrap: [AppComponent]
