@@ -15,14 +15,14 @@ let app = express();
 
 const port = process.env.PORT || 3000;
 
-app.use(express.static(path.join(__dirname, '../client/dist/')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.use(bodyParser.json());
 
 app.use(function (req, res, next) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
 	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH');
-	//res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+	res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 	res.setHeader('Access-Control-Allow-Credentials', true);
 	res.setHeader('Access-Control-Allow-Headers', '*');
 	next();
@@ -213,9 +213,9 @@ app.delete('/users/me/token', authenticate, ( req, res ) => {
 			});
 });
 
-app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, '../client/dist/index.html'))
-});
+// app.get('*', function(req, res) {
+//     res.sendFile(path.join(__dirname, '../client/dist/index.html'))
+// });
 
 app.listen(port, () => {
 	console.log(`Server is on at ${port}.`);
