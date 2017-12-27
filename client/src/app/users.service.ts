@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class UsersService {
-   userUrl: string = 'http://localhost:3000/users';
+   userUrl: string = 'https://dry-wildwood-27229.herokuapp.com/users';
 
   constructor( private _http: Http ) { }
 

@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class TodosService {
-    todosUrl: string = 'http://localhost:3000/todos';
+    todosUrl: string = 'https://dry-wildwood-27229.herokuapp.com/todos';
 
     constructor( private _http: Http ) { }
 
